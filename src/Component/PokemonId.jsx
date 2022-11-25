@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Abilities from './Abilities';
 import PokemonMoves from './PokemonMoves';
 import Pokemons from './Pokemons';
@@ -38,6 +38,12 @@ const PokemonId = () => {
      useEffect(() => {
         axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`)
          .then(res => setPokemonById(res.data)) 
+         .catch(error => {
+            if(error.response?.status === 404){
+                alert("Pokemon no encontrado") // setIsShowingModal(true)
+                navigate("/pokedex");
+            }
+         })
      },[id])
 
      console.log(pokemonById);
@@ -96,16 +102,23 @@ const PokemonId = () => {
 
                         <div className='pokemonByIdAbilities'>
                             <h2>Abilities</h2><br />
-                            {
-                                pokemonById.abilities?.map(abilities => (
-                                    <li>
-                                        <Abilities
-                                            key={pokemonById.id}
-                                            abilitiesRoute={abilities.ability.url} />
-                                    </li>
-                                ))
-                            }
+                            <div className='abilityA'>
+                                {
+                                    pokemonById.abilities?.map(abilities => (
+                                        <li>
+                                            <Abilities
+                                                key={pokemonById.id}
+                                                abilitiesRoute={abilities.ability.url} />
+                                        </li>
+                                    ))
+                                }
+                            </div>
                         </div>
+                        {/* imaginando que 40 es el valor dinamico, se multiplica por cien y se divide entre 150 para dar el valor real. */}
+
+
+                        {/* 150 -> 100  */}
+                        {/* 40  -> x */}
 
                     </div>
                     <div className='statsBars'>
@@ -113,14 +126,18 @@ const PokemonId = () => {
                         <h3>HP: {pokemonById.stats?.[0]["base_stat"]}/150<div className='bar'>
                             <div style={{
                                 height: "20px",
-                                width: `${pokemonById.stats?.[0]["base_stat"] -40 }%`,
+                                width: `${pokemonById.stats?.[0]["base_stat"] *100/150 }%`,
+                                maxWidth:"100%",
                                 background:"orange",
+                                borderRadius:"0rem 1rem 1rem 0rem",
                                 transition: "width 2s"}}></div>
                             </div></h3>
-                        <h3>ATTACK: {pokemonById.stats?.[1]["base_stat"]}/150<div className='bar'>
+                        <h3>ATTACK: {pokemonById.stats?.[1]["base_stat"]} /150<div className='bar'>
                             <div style={{
                                 height: "20px",
-                                width: `${pokemonById.stats?.[1]["base_stat"] -40 }%`,
+                                width: `${pokemonById.stats?.[1]["base_stat"] * 100/150 }%`,
+                                maxWidth:"100%",
+                                borderRadius:"0rem 1rem 1rem 0rem",
                                 background:"orange",
                                 transition: "width 0.5s",
                                 }}></div>
@@ -128,14 +145,18 @@ const PokemonId = () => {
                         <h3>DEFENSE: {pokemonById.stats?.[2]["base_stat"]}/150<div className='bar'>
                             <div style={{
                                 height: "20px",
-                                width: `${pokemonById.stats?.[2]["base_stat"] -40 }%`,
+                                width: `${pokemonById.stats?.[2]["base_stat"] * 100/150 }%`,
+                                maxWidth:"100%",
+                                borderRadius: "0rem 1rem 1rem 0rem",
                                 background:"orange",
                                 transition: "width 2s"}}></div>
                             </div></h3>
                         <h3>SPEED: {pokemonById.stats?.[5]["base_stat"]}/150<div className='bar'>
                             <div style={{
                                 height: "20px",
-                                width: `${pokemonById.stats?.[5]["base_stat"] - 40}%`,
+                                width: `${pokemonById.stats?.[5]["base_stat"] * 100/150}%`,
+                                maxWidth:"100%",
+                                borderRadius:"0rem 1rem 1rem 0rem",
                                 background:"orange",
                                 transition: "width 2s"}}></div>
                             </div></h3>
@@ -145,7 +166,8 @@ const PokemonId = () => {
 
             <div className='movements'>
                 <h2>Movements</h2>
-                {
+               <div className='pokemonMoves'>
+               {
                     pokemonById.moves?.map(move => (
                         <li>
                             <PokemonMoves
@@ -154,6 +176,7 @@ const PokemonId = () => {
                         </li>
                     ))
                 }
+               </div>
             </div>
 
         </div>

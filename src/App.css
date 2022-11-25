@@ -751,6 +751,11 @@ hr{
     padding: 4px 20px;
 }
 
+.abilityA{
+    display: flex;
+    gap: 1rem;
+}
+
 /* -------------------------------------------------------- Stats ------------------------------------------------------------ */
 
 .statsBars{
@@ -774,16 +779,20 @@ hr{
     width: 85%;
     margin-top: 3rem;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    /* flex-wrap: wrap; */
     box-shadow: 0px 0px 5px 2px rgb(196, 196, 196);
     padding: 2rem;
 }
 
 .moveContainer{
     display: flex;
-    flex-wrap: wrap;
 }
 
+.pokemonMoves{
+  display: flex;
+  flex-wrap: wrap;
+}
 .pokemonMove{
     background-color: rgb(219, 219, 219);
     margin: 5px;
